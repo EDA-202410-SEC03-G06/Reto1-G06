@@ -118,7 +118,8 @@ def print_req_5(control):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    catalog= controller.req_5(control)
+    print(catalog["elements"])
 
 
 def print_req_6(control):

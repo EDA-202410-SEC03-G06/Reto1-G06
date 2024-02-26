@@ -159,7 +159,7 @@ def req_4(data_structs):
     pass
 
 
-def req_5(data_structs):
+def req_5(catalog, city, fecha_in, fecha_fin):
     """
     Función que soluciona el requerimiento 5
     """
@@ -169,7 +169,7 @@ def req_5(data_structs):
     
 
     for oferta in lt.iterator(ofertas):
-        if ciudad == oferta['city']:
+        if city == oferta['city']:
             date = oferta['published_at']
             fecha = datetime.strftime(date,'%Y-%m-%d')
             if fecha<=fecha_fin and fecha>=fecha_in:
