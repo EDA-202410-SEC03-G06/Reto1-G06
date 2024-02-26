@@ -169,7 +169,7 @@ def req_5(data_structs):
     
 
     for oferta in lt.iterator(ofertas):
-        if ciudad == oferta['street']:
+        if ciudad == oferta['city']:
             date = oferta['published_at']
             fecha = datetime.strftime(date,'%Y-%m-%d')
             if fecha<=fecha_fin and fecha>=fecha_in:
