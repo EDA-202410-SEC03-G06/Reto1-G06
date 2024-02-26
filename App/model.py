@@ -151,12 +151,22 @@ def req_3(data_structs):
     pass
 
 
-def req_4(data_structs):
+def req_4(catalog, pais, fecha_in, fecha_fin):
     """
     Función que soluciona el requerimiento 4
     """
     # TODO: Realizar el requerimiento 4
-    pass
+    ofertas = catalog['jobs']
+    final  = lt.newList('ARRAY_LIST')
+    
+
+    for oferta in lt.iterator(ofertas):
+        if pais == oferta['country_code']:
+            date = oferta['published_at']
+            fecha = datetime.strftime(date,'%Y-%m-%d')
+            if fecha<=fecha_fin and fecha>=fecha_in:
+                lt.addLast(final,oferta)
+    return final 
 
 
 def req_5(catalog, city, fecha_in, fecha_fin):

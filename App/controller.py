@@ -134,7 +134,7 @@ def req_4(control):
     Retorna el resultado del requerimiento 4
     """
     # TODO: Modificar el requerimiento 4
-    pass
+    return model.req_4(control["model"], "PL", "2020-04-14", "2023-04-14")
 
 
 def req_5(control):
