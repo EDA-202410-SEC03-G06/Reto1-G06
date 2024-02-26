@@ -164,7 +164,17 @@ def req_5(data_structs):
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
-    pass
+    ofertas = catalog['jobs']
+    final  = lt.newList('ARRAY_LIST')
+    
+
+    for oferta in lt.iterator(ofertas):
+        if ciudad == oferta['street']:
+            date = oferta['published_at']
+            fecha = datetime.strftime(date,'%Y-%m-%d')
+            if fecha<=fecha_fin and fecha>=fecha_in:
+                lt.addLast(final,oferta)
+    return final 
 
 
 def req_6(data_structs):
