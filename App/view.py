@@ -26,9 +26,11 @@ import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import stack as st
 from DISClib.ADT import queue as qu
-assert cf
 
+assert cf
+from tabulate import tabulate 
 import traceback
+import threading
 
 """
 La vista se encarga de la interacción con el usuario
@@ -43,7 +45,7 @@ def new_controller():
         Se crea una instancia del controlador
     """
     #TODO: Llamar la función del controlador donde se crean las estructuras de datos
-    control = controller.new_controller()
+    control = controller.new_controller(tipo)
     return control
 
 
@@ -58,6 +60,8 @@ def print_menu():
     print("7- Ejecutar Requerimiento 6")
     print("8- Ejecutar Requerimiento 7")
     print("9- Ejecutar Requerimiento 8")
+    print("10- Escoger entre Array-List y Single-Linked")
+    print("11- Escoger Tamaño")
     print("0- Salir")
 
 
@@ -66,7 +70,7 @@ def load_data(control):
     Carga los datos
     """
     #TODO: Realizar la carga de datos
-    return controller.load_data(control)
+    return controller.load_data(control,size_archivo)
     
     
 
@@ -83,10 +87,16 @@ def print_req_1(control):
         Función que imprime la solución del Requerimiento 1 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 1
+    pais = input('Inserte el codigo del pais: ')
+    exp = input('Que nivel de experiencia busca?(junior,mid,senior): ')
+    n = int(input('Ingrese la cantidad de ofertas que desea ver: '))
+    tup = controller.req_1(control, n, pais, exp)
+    catalog = tup[1]
+    ofertas = catalog['elements']
     
-    catalog = controller.req_1(control)
-    print(catalog['elements'])
-
+   # print(tabulate(ofertas, headers='keys'))
+    print(ofertas)
+    return tup
 
 
 def print_req_2(control):
@@ -94,7 +104,14 @@ def print_req_2(control):
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    pass
+    city = input('Inserte el nombre de la ciudad: ')
+    empresa = input('Ingrese el nombre de la empresa: ')
+    n = int(input('Ingrese la cantidad de ofertas que desea ver: '))    
+    tup = controller.req_2(control, n , empresa, city)
+    catalog = tup[1]
+    ofertas = catalog['elements']
+    print(tabulate(ofertas, headers='keys', ))
+    
 
 
 def print_req_3(control):
@@ -102,7 +119,11 @@ def print_req_3(control):
         Función que imprime la solución del Requerimiento 3 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 3
-    pass
+    empresa = input('Escriba el nombre de la empresa que desea')
+    fecha_in= input('Escriba la fecha inicial (mas reciente):')
+    fecha_fin=input('Escriba la fecha final (mas antigua):')
+    return  controller.req_3(control,empresa,fecha_in,fecha_fin)
+    
 
 
 def print_req_4(control):
@@ -131,7 +152,17 @@ def print_req_6(control):
         Función que imprime la solución del Requerimiento 6 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 6
-    pass
+    exp = input('Que nivel de experiencia busca?(junior,mid,senior): ')
+    n = int(input('Ingrese la cantidad de ofertas que desea ver: '))
+    pais = input('Ingrese el codigo del pais, si no desea un pais anote 0: ')
+    fecha_in= input('Escriba la fecha inicial (mas reciente): ')
+    fecha_fin=input('Escriba la fecha final (mas antigua): ')
+    if pais == '0':
+        pais = None
+    ofertas = controller.req_6(control,n,pais, exp, fecha_in,fecha_fin)
+        
+   
+    return 
 
 
 def print_req_7(control):
@@ -151,13 +182,24 @@ def print_req_8(control):
 
 
 # Se crea el controlador asociado a la vista
+tipo = None
+size_archivo = 3
 control = new_controller()
+
+default_limit = 1000
 
 # main del reto
 if __name__ == "__main__":
+    #threading.stack_size(67108864*2)
+    sys.setrecursionlimit(default_limit*1000000)
+    #thread = threading.Thread(target=menu_cycle)
+   # thread.start()
+    
+
     """
     Menu principal
     """
+    
     working = True
     #ciclo del menu
     while working:
@@ -174,14 +216,24 @@ if __name__ == "__main__":
             
         
         elif int(inputs) == 2:
-            print_req_1(control)
 
+            tup = print_req_1(control)
+            print('La cantidad de ofertas segun el nivel de experiencia que escogio: ',tup[0])
+            
         elif int(inputs) == 3:
-            print_req_2(control)
+
+            tup = print_req_2(control)
+            print('La cantidad de ofertas segun la ciudad y empresa que escogio: ',tup[0])
+      
+            
 
         elif int(inputs) == 4:
-            print_req_3(control)
-
+            tup = print_req_3(control)
+            print('La cantidad de ofertas total con estos requerimientos es de:',tup[0])
+            print('La cantidad de ofertas "junior" es',tup[1])
+            print('La cantidad de ofertas "mid" es',tup[2])
+            print('La cantidad de ofertas "senior" es',tup[3])
+            
         elif int(inputs) == 5:
             print_req_4(control)
 
@@ -196,7 +248,17 @@ if __name__ == "__main__":
 
         elif int(inputs) == 9:
             print_req_8(control)
-
+        
+        elif int(inputs) == 10:
+            lista = int(input('Ingrese el tipo de lista que desea (1 para Array y 2 para encadenada):'))
+            if lista == 1:
+                tipo = 'ARRAY_LIST'
+            elif lista == 2:
+                tipo = 'SINGLE_LINKED'
+            
+        elif int(inputs) == 11:
+            size_archivo = int(input('Escoga el Tamaño:\n1.10%\n2.20%\n3.small%\n4.80%\n5.100%\nOpcion: '))
+            
         elif int(inputs) == 0:
             working = False
             print("\nGracias por utilizar el programa") 

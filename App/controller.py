@@ -31,7 +31,7 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 
-def new_controller():
+def new_controller(tipo):
     """
     Crea una instancia del modelo
     """
@@ -39,48 +39,63 @@ def new_controller():
     control = {
         'model': None
     }
-    control['model'] = model.new_data_structs()
+    control['model'] = model.new_data_structs(tipo)
     return control
 
 
 # Funciones para la carga de datos
 
-def load_data(control):
+def load_data(control,size_archivo):
     """
     Carglos datos del reto
     """
-    skills = load_skills(control['model'])
-    jobs = load_jobs(control["model"])
-    locations = load_locations(control['model'])
-    employments = load_employment_type(control['model'])
+    if size_archivo == 1:
+        arc = "10-por"
+    elif size_archivo ==2:
+        arc = "20-por"
+    elif size_archivo ==3:
+        arc = "small"
+    elif size_archivo == 4: 
+        arc= "80-por"
+    elif size_archivo == 5:
+        arc = "large"
+        
+    skills = load_skills(control['model'],arc)
+    jobs = load_jobs(control["model"],arc)
+    locations = load_locations(control['model'],arc)
+    employments = load_employment_type(control['model'],arc)
     return (skills, jobs, locations, employments)
 
-def load_skills(catalog):
-    booksfile = cf.data_dir + "small-skills.csv"
+def load_skills(catalog,arc):
+    booksfile = cf.data_dir + str(arc+"-skills.csv")
     input_file = csv.DictReader(open(booksfile, encoding="utf-8"),delimiter=";")
     for skill in input_file:
         model.add_skills(catalog,skill)
    
     return model.data_size(catalog["skills"])
     
-def load_jobs(catalog):
-    booksfile = cf.data_dir + "small-jobs.csv"
+def load_jobs(catalog,arc):
+    booksfile = cf.data_dir + str(arc+"-jobs.csv")
     input_file = csv.DictReader(open(booksfile, encoding="utf-8"),delimiter=";")
     for job in input_file:
         model.add_jobs(catalog,job)
+        
     
     model.sort(catalog)
     return model.data_size(catalog['jobs'])
 
-def load_locations(catalog):
-    booksfile = cf.data_dir + "small-multilocations.csv"
+def load_locations(catalog,arc):
+        
+    booksfile = cf.data_dir + str(arc+"-multilocations.csv")
+        
     input_file = csv.DictReader(open(booksfile, encoding="utf-8"),delimiter=";")
     for multilocation in input_file:
         model.add_locations(catalog, multilocation)
     return model.data_size(catalog['multi-locations'])
 
-def load_employment_type(catalog):
-    booksfile = cf.data_dir + "small-employments_types.csv"
+def load_employment_type(catalog,arc):
+   
+    booksfile = cf.data_dir + str(arc+"-employments_types.csv")
     input_file = csv.DictReader(open(booksfile, encoding="utf-8"),delimiter=";")
     for employment in input_file:
         model.add_employment_types(catalog, employment)
@@ -105,28 +120,56 @@ def get_data(control, id):
     pass
 
 
-def req_1(control):
+def req_1(control,n,pais,exp):
     """
     Retorna el resultado del requerimiento 1
     """
     # TODO: Modificar el requerimiento 1
-    return model.req_1(control['model'],10,'PL','junior')
+    lista = model.req_1(control['model'],20,'PL','junior')
+    size = model.data_size(lista)
+    
+    return size, lista
 
 
-def req_2(control):
+def req_2(control, n , empresa, city):
     """
     Retorna el resultado del requerimiento 2
     """
     # TODO: Modificar el requerimiento 2
-    pass
+    lista = model.req_2(control['model'],10,'IntelligINTS','Rijad')
+    size = model.data_size(lista)
+
+    return size, lista 
 
 
-def req_3(control):
+def req_3(control,empresa,fecha_in,fecha_fin):
     """
     Retorna el resultado del requerimiento 3
+    Número total de ofertas.
+• Número total de ofertas con experticia junior.
+• Número total de ofertas con experticia mid.
+• Número total de ofertas con experticia senior
     """
     # TODO: Modificar el requerimiento 3
-    pass
+    start_time = get_time()
+    lista = model.req_3(control['model'],'Bitfinex','2010-04-14','2023-04-14')
+    end_time = get_time()
+    deltaTime = delta_time(start_time, end_time)
+    print(deltaTime,"[ms]")
+    size = model.data_size(lista)
+    junior = 0
+    mid = 0
+    senior = 0 
+    for oferta in model.lt.iterator(lista):
+        if oferta['experience_level']=='junior':
+            junior +=1
+        elif oferta['experience_level']=='mid':
+            mid +=1
+        elif oferta['experience_level']=='senior':
+            senior +=1
+        
+    return size, junior, mid, senior
+    
 
 
 def req_4(control):
@@ -144,12 +187,17 @@ def req_5(control):
     # TODO: Modificar el requerimiento 5
     return model.req_5(control["model"], "Warszawa", "2020-04-14", "2023-04-14")
 
-def req_6(control):
+def req_6(control,n,pais,exp,fecha_in,fecha_fin):
     """
     Retorna el resultado del requerimiento 6
     """
     # TODO: Modificar el requerimiento 6
-    pass
+    ofertas = model.req_6(control['model'],20,'PL','junior','2020-04-14','2023-04-14')
+ 
+    
+    return ofertas
+
+
 
 
 def req_7(control):
@@ -183,3 +231,4 @@ def delta_time(start, end):
     """
     elapsed = float(end - start)
     return elapsed
+

@@ -44,7 +44,7 @@ dos listas, una para los videos, otra para las categorias de los mismos.
 # Construccion de modelos
 
 
-def new_data_structs():
+def new_data_structs(tipo):
     """
     Inicializa las estructuras de datos del modelo. Las crea de
     manera vacía para posteriormente almacenar la información.
@@ -53,6 +53,9 @@ def new_data_structs():
     open_to_hire_ukrainians;id;display_offer
 
     """ 
+    if tipo == None:
+        tipo = 'ARRAY_LIST'
+        
     catalog = {'skills':None,
                'multi-locations': None,
                'jobs': None,
@@ -60,10 +63,10 @@ def new_data_structs():
               }
     
     
-    catalog['skills'] = lt.newList('ARRAY_LIST')
-    catalog['multi-locations'] = lt.newList('ARRAY_LIST')
-    catalog['jobs'] = lt.newList('ARRAY_LIST')
-    catalog['employment-types'] = lt.newList('ARRAY_LIST')
+    catalog['skills'] = lt.newList(tipo)
+    catalog['multi-locations'] = lt.newList(tipo)
+    catalog['jobs'] = lt.newList(tipo)
+    catalog['employment-types'] = lt.newList(tipo)
     #TODO: Inicializar las estructuras de datos
     return catalog
 
@@ -95,6 +98,7 @@ def new_data(id, info):
     Crea una nueva estructura para modelar los datos
     """
     #TODO: Crear la función para estructurar los datos
+    
     pass
 
 
@@ -120,6 +124,7 @@ def req_1(catalog, n, pais, expert):
     # TODO: Realizar el requerimiento 1
     """
     Función que soluciona el requerimiento 1
+
     """
     ofertas = catalog['jobs']
     filtro = lt.newList('ARRAY_LIST')
@@ -129,26 +134,76 @@ def req_1(catalog, n, pais, expert):
             lt.addLast(filtro, oferta)
             total_ofertas+=1
             if total_ofertas>=n:
-                return filtro
-    
+                break
+            
+    filtro_2 = lt.newList('ARRAY_LIST')
+    for o in lt.iterator(filtro):
+        datos = {'title':o['title'],'company_name':o['company_name'],'experience_level':o['experience_level'],
+                 'country_code':o['country_code'],'city':o['city'],'company_size':o['company_size'],
+                 'workplace_type':o['workplace_type'], 'open_to_hire_ukrainians':o['open_to_hire_ukrainians']}
+        lt.addLast(filtro_2,datos)
+    return filtro_2 
     
     
 
 
-def req_2(data_structs):
+def req_2(catalog, n, empresa, ciudad):
     """
     Función que soluciona el requerimiento 2
+
     """
     # TODO: Realizar el requerimiento 2
-    pass
+    ofertas = catalog['jobs']
+    filtro = lt.newList('ARRAY_LIST')
+    total_ofertas=0
+    for oferta in lt.iterator(ofertas):
+        if oferta['city'] ==ciudad and oferta['company_name']==empresa:
+            lt.addLast(filtro, oferta)
+            total_ofertas+=1
+            if total_ofertas>=n:
+                break
+            
+    filtro_2 = lt.newList('ARRAY_LIST')
+    for o in lt.iterator(filtro):
+        datos = {'published_at':o['published_at'],'country_code':o['country_code'],'city':o['city'],
+                 'company_name':o['company_name'],'title':o['title'], 'experience_level':o['experience_level'],
+                 'remote_interview':o['remote_interview'],'workplace_type':o['workplace_type']}
+        lt.addLast(filtro_2,datos)    
+    
+    return filtro_2
+    
 
 
-def req_3(data_structs):
+
+def req_3(catalog, empresa, fecha_in, fecha_fin):
     """
     Función que soluciona el requerimiento 3
     """
     # TODO: Realizar el requerimiento 3
-    pass
+    ofertas = catalog['jobs']
+    final  = lt.newList('ARRAY_LIST')
+   
+
+    for oferta in lt.iterator(ofertas):
+        if empresa == oferta['company_name']:
+            date = oferta['published_at']
+            fecha = datetime.strftime(date,'%Y-%m-%d')
+            if fecha<=fecha_fin and fecha>=fecha_in:
+                lt.addLast(final,oferta)
+            elif fecha<fecha_in:
+                break
+            
+    filtro_2 = lt.newList('ARRAY_LIST')
+    for o in lt.iterator(final):
+        datos = {'published_at':o['published_at'],'title':o['title'],'experience_level':o['experience_level'],
+                 'city':o['city'],'country_code':o['country_code'],'company_size':o['company_size'], 
+                 'workplace_type':o['workplace_type'],'open_to_hire_ukrainians':o['open_to_hire_ukrainians']}
+        lt.addLast(filtro_2,datos)    
+    
+    ins.sort(filtro_2, sort_criteria_req3)
+    print(filtro_2)
+            
+    return filtro_2 
 
 
 def req_4(catalog, pais, fecha_in, fecha_fin):
@@ -195,21 +250,112 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     return len(rango_de_ofertas), len(empresas), rango_de_ofertas 
 
 
-def req_6(data_structs):
+
+
+
+def req_6(data_structs, n, pais, experience, fecha_in, fecha_fin):
+    """
+    Función que soluciona el requerimiento 7
+    """
+    # TODO: Realizar el requerimiento 
+    catalog = data_structs['jobs']
+    emptypes = data_structs['employment-types']
+    ciudades = lt.newList('ARRAY_LIST')
+    ofertas = lt.newList('ARRAY_LIST')
+    empresas = lt.newList('ARRAY_LIST')
+    id_list = lt.newList('ARRAY_LIST')
+    city = {}
+    cant_empresas = 0
+    sal_promedio = 0
+    div_salario = 0
+#filtrar con pais
+    if pais != None: 
+        for oferta in lt.iterator(catalog):
+         
+            if pais == oferta['country_code'] and experience == oferta['experience_level']:
+                date = oferta['published_at']
+                fecha = datetime.strftime(date,'%Y-%m-%d')
+                if fecha<=fecha_fin and fecha>=fecha_in:
+                 
+                    if oferta['city'] not in city:
+                        city[oferta['city']] = 1
+                        lt.addLast(ofertas,oferta)     
+                        
+                    elif oferta['city']  in city:
+                        lt.addLast(ofertas,oferta)
+                        city[oferta['city']] += 1
+
+#filtrar sin pais        
+    else:
+        for oferta in lt.iterator(catalog):
+            date = oferta['published_at']
+            fecha = datetime.strftime(date,'%Y-%m-%d')
+            if  experience == oferta['experience_level'] and fecha<=fecha_fin and fecha>=fecha_in:
+                    
+                    if oferta['city'] not in city:
+                        city[oferta['city']] = 1
+                        lt.addLast(ofertas,oferta)     
+                        
+                    elif oferta['city']  in city:
+                        lt.addLast(ofertas,oferta)
+                        city[oferta['city']] += 1
+    
+      
+       
+# sort a ciudades
+    for ciudad in city.keys():
+        lt.addLast(ciudades,{'city':ciudad,'count':city[ciudad]})     
+           
+    merg.sort(ciudades,sort_criteria_req6)
+    lista_de_n_cities = lt.newList('ARRAY_LIST')
+    for ciudad in lt.iterator(ciudades):
+        if lt.size(lista_de_n_cities)<n:
+            lt.addLast(lista_de_n_cities,ciudad['city'])
+        else:
+            break
+    cant_ciudades = lt.size(lista_de_n_cities)
+    mayor = lt.firstElement(ciudades)
+    sub = lt.subList(ciudades,0,n+1)
+    menor = lt.lastElement(sub)
+    
+#lista filtrada con las ciudades
+    filtro = lt.newList('ARRAY_LIST')
+    for oferta in lt.iterator(ofertas):
+        present = lt.isPresent(lista_de_n_cities,oferta['city'])
+        if present>0:
+            lt.addLast(filtro,oferta)
+    total_ofertas = lt.size(filtro)
+
+#contar empresas y sacar id  
+    for oferta in lt.iterator(filtro):
+        present_empresa = lt.isPresent(empresas,oferta['company_name'])
+        if present_empresa==0:
+            lt.addLast(empresas,oferta['company_name']) 
+            cant_empresas +=1
+        lt.addLast(id_list,oferta['id'])
+          
+    
+    #promedio salario
+    if pais!=None:
+        for oferta in lt.iterator(emptypes):
+            present_id = lt.isPresent(id_list,oferta['id'])
+            if present_id>0 and oferta['salary_from']!='':
+                sal_promedio+= int(oferta['salary_from'])
+                div_salario +=1
+
+    promedio = sal_promedio/div_salario
+    
+    print(promedio)
+    return total_ofertas, cant_ciudades, cant_empresas, mayor, menor, promedio                                 
+    
+
+def req_7(data_structs):
     """
     Función que soluciona el requerimiento 6
     """
     # TODO: Realizar el requerimiento 6
+    
     pass
-
-
-def req_7(data_structs):
-    """
-    Función que soluciona el requerimiento 7
-    """
-    # TODO: Realizar el requerimiento 7
-    pass
-
 
 def req_8(data_structs):
     """
@@ -251,3 +397,13 @@ def sort(data_structs):
     """
     #TODO: Crear función de ordenamiento
     return merg.sort(data_structs["jobs"], sort_criteria)
+
+def sort_criteria_req3(data_1,data_2):
+    if data_1['published_at']==data_2['published_at']:
+        return data_1['country_code'] < data_2['country_code']
+    else:
+        return data_1["published_at"] > data_2["published_at"]
+
+
+def sort_criteria_req6(data_1,data_2):
+    return data_1['count']>data_2['count']
