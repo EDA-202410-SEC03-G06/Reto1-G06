@@ -180,12 +180,12 @@ def req_4(control):
     return model.req_4(control["model"], "PL", "2020-04-14", "2023-04-14")
 
 
-def req_5(control):
+def req_5(catalog, city, fecha_in, fecha_fin):
     """
     Retorna el resultado del requerimiento 5
     """
     # TODO: Modificar el requerimiento 5
-    return model.req_5(control["model"], "Warszawa", "2020-04-14", "2023-04-14")
+    return model.req_5(catalog["model"], "Warszawa", "2020-04-14", "2023-04-14")
 
 def req_6(control,n,pais,exp,fecha_in,fecha_fin):
     """
