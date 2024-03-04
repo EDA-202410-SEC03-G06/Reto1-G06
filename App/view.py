@@ -119,8 +119,11 @@ def print_req_5(control):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    catalog= controller.req_5(control)
-    print(catalog["elements"])
+    ciudad=input("Ingrese el nombre de la ciudad")
+    fecha_in= input("Ingrese la fecha inicial del periodo a consultar")
+    fecha_fin= input("Ingrese la fecha final del periodo a consultar")
+    return  controller.req_5(control, ciudad, fecha_in, fecha_fin)
+    
 
 
 def print_req_6(control):
