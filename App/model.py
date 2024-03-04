@@ -175,16 +175,24 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     """
     # TODO: Realizar el requerimiento 5
     ofertas = catalog['jobs']
-    final  = lt.newList('ARRAY_LIST')
-    
-
+    rango_de_ofertas  = lt.newList('ARRAY_LIST')
+    fecha_in = datetime.strptime(fecha_in, "%Y-%m-%d")
+    fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d")
+    empresas= lt.newList("ARRAY_LIST")
+ 
     for oferta in lt.iterator(ofertas):
         if city == oferta['city']:
+            empresa = oferta["company_name"]
             date = oferta['published_at']
+            date = date[0:9]
             fecha = datetime.strftime(date,'%Y-%m-%d')
             if fecha<=fecha_fin and fecha>=fecha_in:
-                lt.addLast(final,oferta)
-    return final 
+                lt.addLast(rango_de_ofertas,oferta)
+                empresa = oferta["company_name"]
+                if empresa not in empresas:
+                    lt.addLast(empresas, empresa)
+                    
+    return len(rango_de_ofertas), len(empresas), rango_de_ofertas 
 
 
 def req_6(data_structs):
