@@ -185,7 +185,10 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     Retorna el resultado del requerimiento 5
     """
     # TODO: Modificar el requerimiento 5
-    return model.req_5(catalog["model"], "Warszawa", "2020-04-14", "2023-04-14")
+    prueba= model.req_5(catalog["model"], "Warszawa", "2020-04-14", "2023-04-14")
+    total_empresas=0
+    for oferta in 
+    
 
 def req_6(control,n,pais,exp,fecha_in,fecha_fin):
     """
