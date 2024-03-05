@@ -231,36 +231,27 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     # TODO: Realizar el requerimiento 5
     ofertas = catalog['jobs']
     ofertas_filtradas  = lt.newList('ARRAY_LIST')
-    fecha_in = datetime.strptime(fecha_in, "%Y-%m-%d")
-    fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d")
     empresas= lt.newList("ARRAY_LIST")
     mayor_numero_empresas = {}
     numero_empresas_ordenadas = lt.newList("ARRAY_LIST")
  
     for oferta in lt.iterator(ofertas):
-        if city == oferta['city']:
+        fecha = datetime.strftime(oferta['published_at'],'%Y-%m-%d')
+        if city == oferta['city'] and  fecha<=fecha_fin and fecha>=fecha_in:
             empresa = oferta["company_name"]
-            date = oferta['published_at']
-            fecha = datetime.strftime(date,'%Y-%m-%d')
-            fecha = datetime.strptime(fecha, "%Y-%m-%d")
-            
-            if fecha<=fecha_fin and fecha>=fecha_in:
-                lt.addLast(ofertas_filtradas,oferta)
-                cantidad_ofertas= lt.size(ofertas_filtradas)
-                if lt.isPresent(empresas, empresa)==0:
-                    lt.addLast(empresas, empresa)
-                    cantidad_empresas= lt.size(empresas)
-                
-                if oferta["company_name"] not in mayor_numero_empresas:
-                    mayor_numero_empresas[oferta["company_name"]] = 1
-                else: 
-                    mayor_numero_empresas[oferta["company_name"]] +=1
+            lt.addLast(ofertas_filtradas,oferta)
+            if empresa not in mayor_numero_empresas.keys():
+                mayor_numero_empresas[oferta["company_name"]] = 1
+            elif empresa  in mayor_numero_empresas.keys(): 
+                mayor_numero_empresas[oferta["company_name"]] +=1
         
-                    
+    cantidad_ofertas= lt.size(ofertas_filtradas)                
                     
     for empresa in mayor_numero_empresas.keys():
-        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "count":mayor_numero_empresas[empresa]})
-    merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
+        lt.addLast(numero_empresas_ordenadas, {"empresa":empresa, "count":mayor_numero_empresas[empresa]})
+    merg.sort(numero_empresas_ordenadas, sort_criteria_req5)
+    print(numero_empresas_ordenadas)
+    cant_empresas = lt.size(numero_empresas_ordenadas)
     mayor= lt.firstElement(numero_empresas_ordenadas)
     mayor_empresa= mayor["empresa"]
     menor= lt.lastElement(numero_empresas_ordenadas)
@@ -276,7 +267,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     
         
                     
-    return (cantidad_ofertas, cantidad_empresas, (mayor, mayor_empresa), (menor, menor_empresa), ultima_respuesta)
+    return cantidad_ofertas, cant_empresas, mayor_empresa
 
 
 
@@ -399,7 +390,7 @@ def req_8(catalog, nivel_experiencia, fecha_in, fecha_fin):
     
     for empresas in lt.iterator(ofertas):
         
-
+        pass
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def compare(data_1, data_2):
