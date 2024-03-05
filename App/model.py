@@ -394,8 +394,7 @@ def req_8(catalog, nivel_experiencia, fecha_in, fecha_fin):
     # TODO: Realizar el requerimiento 8
     
     #Empresas que publicaron por lo menos una oferte
-    empresas_que_publicaron_algo=0
-    ofertas = catalog["jobs"]
+    
     
 
 # Funciones utilizadas para comparar elementos dentro de una lista
