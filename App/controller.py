@@ -188,8 +188,10 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     prueba= model.req_5(catalog["model"], "Warszawa", "2020-04-14", "2023-04-14")
     total_ofertas= model.lt.size(prueba[0])
     total_empresas=model.lt.size(prueba[1])
-    
-    
+    mayor_empresa= model.lt.size(prueba[2])
+    menor_empresa= model.lt.size(prueba[3])
+    lista_final= model.lt.size(prueba[4])
+    return total_ofertas, total_empresas, mayor_empresa, menor_empresa, lista_final
     
 
 def req_6(control,n,pais,exp,fecha_in,fecha_fin):

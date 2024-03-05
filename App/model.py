@@ -235,33 +235,49 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d")
     empresas= lt.newList("ARRAY_LIST")
     mayor_numero_empresas = {}
-    numero_empresas = lt.newList("ARRAY_LIST")
+    numero_empresas_ordenadas = lt.newList("ARRAY_LIST")
  
     for oferta in lt.iterator(ofertas):
         if city == oferta['city']:
             empresa = oferta["company_name"]
             date = oferta['published_at']
             fecha = datetime.strftime(date,'%Y-%m-%d')
+            fecha = datetime.strptime(fecha, "%Y-%m-%d")
+            
             if fecha<=fecha_fin and fecha>=fecha_in:
                 lt.addLast(ofertas_filtradas,oferta)
-                if empresa not in empresas:
+                cantidad_ofertas= lt.size(ofertas_filtradas)
+                if lt.isPresent(empresas, empresa)==0
                     lt.addLast(empresas, empresa)
-                    
-                    
-    # encontrar empresa cuantas veces se repite
-    for oferta in lt.iterator(ofertas):
-        if city == oferta['city']:
-            if oferta["company_name"] not in mayor_numero_empresas:
-                mayor_numero_empresas["company_name"] = 1
-            elif oferta["company_name"] in mayor_numero_empresas:
-                mayor_numero_empresas +=1
-        
-    # encontrar empresa con el mayor numero
-    for compania in mayor_numero_empresas.keys():
-        lt.addLast(numero_empresas, ["empresa":mayor_numero_empresas, "cantidad": ])
+                    cantidad_empresas= lt.size(empresas)
+                
+                if oferta["company_name"] not in mayor_numero_empresas:
+                    mayor_numero_empresas[oferta["company_name"]] = 1
+                else: 
+                    mayor_numero_empresas[oferta["company_name"]] +=1
         
                     
-    return (ofertas_filtradas, empresas, mayor_numero_empresas)
+                    
+    for empresa in mayor_numero_empresas.keys():
+        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "cantidad":mayor_numero_empresas[empresa]})
+    merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
+    mayor= lt.firstElement(numero_empresas_ordenadas)
+    mayor_empresa= mayor["empresa"]
+    menor= lt.lastElement(numero_empresas_ordenadas)
+    menor_empresa= menor["empresa"]
+    
+    ultima_respuesta = lt.newList('ARRAY_LIST')
+    for llave in lt.iterator(ultima_respuesta):
+        datos = {'published_at':llave['published_at'],'title': llave['title'],'experience_level': llave['experience_level'],
+                 'city': llave['city'],'country_code': llave['country_code'],'company_size': llave['company_size'], 
+                 'workplace_type': llave['workplace_type'],'open_to_hire_ukrainians':llave['open_to_hire_ukrainians']}
+        lt.addLast(ultima_respuesta,datos)    
+    ins.sort(ultima_respuesta, sort_criteria_req3)
+    
+        
+                    
+    return (cantidad_ofertas, cantidad_empresas, (mayor, mayor_empresa), (menor, menor_empresa), ultima_respuesta)
+
 
 
 
