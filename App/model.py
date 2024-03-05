@@ -260,7 +260,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
                     
     for empresa in mayor_numero_empresas.keys():
         lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "cantidad":mayor_numero_empresas[empresa]})
-    merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
+    merg.sort(numero_empresas_ordenadas, sort_criteria_req3)
     mayor= lt.firstElement(numero_empresas_ordenadas)
     mayor_empresa= mayor["empresa"]
     menor= lt.lastElement(numero_empresas_ordenadas)
