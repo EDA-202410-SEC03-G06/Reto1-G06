@@ -229,7 +229,42 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
-   
+    ofertas = catalog['jobs']
+    ofertas_filtradas  = lt.newList('ARRAY_LIST')
+    empresas= lt.newList("ARRAY_LIST")
+    mayor_numero_empresas = {}
+    numero_empresas_ordenadas = lt.newList("ARRAY_LIST")
+ 
+    for oferta in lt.iterator(ofertas):
+        fecha= datetime.strftime(oferta["published_at"], "%Y-%m-%d")
+        if city == oferta['city'] and fecha<=fecha_fin and fecha>=fecha_in:
+            empresa = oferta["company_name"]
+            lt.addLast(ofertas_filtradas,oferta)
+            if empresa not in mayor_numero_empresas.keys()
+                mayor_numero_empresas[oferta["company_name"]] = 1
+            elif empresa in mayor_numero_empresas.keys(): 
+                mayor_numero_empresas[oferta["company_name"]] +=1
+    cantidad_ofertas= lt.size(ofertas_filtradas)        
+                    
+                    
+    for empresa in mayor_numero_empresas.keys():
+        lt.addLast(numero_empresas_ordenadas, {"empresa":empresa, "count":mayor_numero_empresas[empresa]})
+    merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
+    cant_empresas= lt.size(numero_empresas_ordenadas)
+    mayor= lt.firstElement(numero_empresas_ordenadas)
+    menor= lt.lastElement(numero_empresas_ordenadas)
+    
+    ultima_respuesta = lt.newList('ARRAY_LIST')
+    for llave in lt.iterator(ultima_respuesta):
+        datos = {'published_at':llave['published_at'],'title': llave['title'], "company_name": llave["company_name"], 
+                   "workplace_type": llave["workplace_type"],'company_size': llave['company_size']} 
+                 
+        lt.addLast(ultima_respuesta,datos)    
+    
+    
+        
+                    
+    return (cantidad_ofertas, cant_empresas, mayor, menor, ultima_respuesta)
 
 
 
