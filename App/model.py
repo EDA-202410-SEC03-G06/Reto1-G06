@@ -387,13 +387,18 @@ def req_7(data_structs):
     
     pass
 
-def req_8(data_structs):
+def req_8(catalog, nivel_experiencia, fecha_in, fecha_fin):
     """
     Función que soluciona el requerimiento 8
     """
     # TODO: Realizar el requerimiento 8
-    pass
-
+    
+    #Empresas que publicaron por lo menos una oferte
+    empresas_que_publicaron_algo=0
+    ofertas = catalog["jobs"]
+    
+    for empresas in lt.iterator(ofertas):
+        
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
