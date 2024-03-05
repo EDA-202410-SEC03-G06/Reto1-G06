@@ -247,7 +247,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
             if fecha<=fecha_fin and fecha>=fecha_in:
                 lt.addLast(ofertas_filtradas,oferta)
                 cantidad_ofertas= lt.size(ofertas_filtradas)
-                if lt.isPresent(empresas, empresa)==0
+                if lt.isPresent(empresas, empresa)==0:
                     lt.addLast(empresas, empresa)
                     cantidad_empresas= lt.size(empresas)
                 
@@ -259,7 +259,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
                     
                     
     for empresa in mayor_numero_empresas.keys():
-        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "cantidad":mayor_numero_empresas[empresa]})
+        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "count":mayor_numero_empresas[empresa]})
     merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
     mayor= lt.firstElement(numero_empresas_ordenadas)
     mayor_empresa= mayor["empresa"]
