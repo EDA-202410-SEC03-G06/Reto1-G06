@@ -143,7 +143,8 @@ def print_req_5(control):
     ciudad=input("Ingrese el nombre de la ciudad: ")
     fecha_in= input("Ingrese la fecha inicial del periodo a consultar: ")
     fecha_fin= input("Ingrese la fecha final del periodo a consultar: ")
-    return  controller.req_5(control, ciudad, fecha_in, fecha_fin)
+    final=  controller.req_5(control, ciudad, fecha_in, fecha_fin)
+    
     
 
 

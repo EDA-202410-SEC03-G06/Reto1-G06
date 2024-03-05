@@ -234,6 +234,8 @@ def req_5(catalog, city, fecha_in, fecha_fin):
     fecha_in = datetime.strptime(fecha_in, "%Y-%m-%d")
     fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d")
     empresas= lt.newList("ARRAY_LIST")
+    mayor_numero_empresas = {}
+    numero_empresas = lt.newList("ARRAY_LIST")
  
     for oferta in lt.iterator(ofertas):
         if city == oferta['city']:
@@ -245,7 +247,21 @@ def req_5(catalog, city, fecha_in, fecha_fin):
                 if empresa not in empresas:
                     lt.addLast(empresas, empresa)
                     
-    return (ofertas, empresas)
+                    
+    # encontrar empresa cuantas veces se repite
+    for oferta in lt.iterator(ofertas):
+        if city == oferta['city']:
+            if oferta["company_name"] not in mayor_numero_empresas:
+                mayor_numero_empresas["company_name"] = 1
+            elif oferta["company_name"] in mayor_numero_empresas:
+                mayor_numero_empresas +=1
+        
+    # encontrar empresa con el mayor numero
+    for compania in mayor_numero_empresas.keys():
+        lt.addLast(numero_empresas, ["empresa":mayor_numero_empresas, "cantidad": ])
+        
+                    
+    return (ofertas_filtradas, empresas, mayor_numero_empresas)
 
 
 
