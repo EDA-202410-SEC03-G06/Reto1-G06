@@ -259,7 +259,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
                     
                     
     for empresa in mayor_numero_empresas.keys():
-        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "count":mayor_numero_empresas[empresa]})
+        lt.addLast(numero_empresas_ordenadas, {"empresa":mayor_numero_empresas, "cantidad":mayor_numero_empresas[empresa]})
     merg.sort(numero_empresas_ordenadas, sort_criteria_req6)
     mayor= lt.firstElement(numero_empresas_ordenadas)
     mayor_empresa= mayor["empresa"]
@@ -397,8 +397,6 @@ def req_8(catalog, nivel_experiencia, fecha_in, fecha_fin):
     empresas_que_publicaron_algo=0
     ofertas = catalog["jobs"]
     
-    for empresas in lt.iterator(ofertas):
-        
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
