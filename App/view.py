@@ -95,7 +95,7 @@ def print_req_1(control):
     ofertas = catalog['elements']
     
    # print(tabulate(ofertas, headers='keys'))
-    print(ofertas)
+    #print(ofertas)
     return tup
 
 
@@ -110,7 +110,7 @@ def print_req_2(control):
     tup = controller.req_2(control, n , empresa, city)
     catalog = tup[1]
     ofertas = catalog['elements']
-    print(tabulate(ofertas, headers='keys', ))
+    #print(tabulate(ofertas, headers='keys', ))
     
 
 
@@ -131,8 +131,7 @@ def print_req_4(control):
         Función que imprime la solución del Requerimiento 4 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 4
-    catalog= controller.req_4(control)
-    print(catalog["elements"])
+    pass
 
 
 def print_req_5(control):
@@ -140,13 +139,10 @@ def print_req_5(control):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    ciudad=input("Ingrese el nombre de la ciudad: ")
-    fecha_in= input("Ingrese la fecha inicial del periodo a consultar: ")
-    fecha_fin= input("Ingrese la fecha final del periodo a consultar: ")
-    final=  controller.req_5(control, ciudad, fecha_in, fecha_fin)
-    
-    
-
+    ciudad= input("Escriba la ciudad que desea:  ")
+    fecha_in= input("Escriba la fecha inicial (más reciente):  ")
+    fecha_fin= input("Escriba la fecha final (más antigua):  ")
+    return controller.req_5(control, ciudad, fecha_in, fecha_fin)
 
 def print_req_6(control):
     """
@@ -171,7 +167,11 @@ def print_req_7(control):
         Función que imprime la solución del Requerimiento 7 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 7
-    pass
+    n= input("Ingrese la cantidad de paises para la consulta")
+    fecha_in= input("Ingrese la fecha inicial (más reciente)")
+    fecha_fin= input("Ingrese la fecha final (más antigua)")
+    ofertas= controller.req_7(control, n, fecha_in, fecha_fin )
+    total_ofertas= 
 
 
 def print_req_8(control):
@@ -224,7 +224,7 @@ if __name__ == "__main__":
         elif int(inputs) == 3:
 
             tup = print_req_2(control)
-            print('La cantidad de ofertas segun la ciudad y empresa que escogio: ',tup[0])
+            #print('La cantidad de ofertas segun la ciudad y empresa que escogio: ',tup[0])
       
             
 
