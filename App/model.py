@@ -240,7 +240,7 @@ def req_5(catalog, city, fecha_in, fecha_fin):
         if city == oferta['city'] and fecha<=fecha_fin and fecha>=fecha_in:
             empresa = oferta["company_name"]
             lt.addLast(ofertas_filtradas,oferta)
-            if empresa not in mayor_numero_empresas.keys()
+            if empresa not in mayor_numero_empresas.keys():
                 mayor_numero_empresas[oferta["company_name"]] = 1
             elif empresa in mayor_numero_empresas.keys(): 
                 mayor_numero_empresas[oferta["company_name"]] +=1

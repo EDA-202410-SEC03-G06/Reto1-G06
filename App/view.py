@@ -167,11 +167,7 @@ def print_req_7(control):
         Función que imprime la solución del Requerimiento 7 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 7
-    n= input("Ingrese la cantidad de paises para la consulta")
-    fecha_in= input("Ingrese la fecha inicial (más reciente)")
-    fecha_fin= input("Ingrese la fecha final (más antigua)")
-    ofertas= controller.req_7(control, n, fecha_in, fecha_fin )
-    total_ofertas= 
+    
 
 
 def print_req_8(control):
